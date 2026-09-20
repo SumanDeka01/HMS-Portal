@@ -1,27 +1,3 @@
-// const Home = () => {
-//   const hostels = ["H-Hostel", "I-Hostel", "HE-Hostel"];
-
-//   return (
-//     <div className="h-screen bg-gray-600 flex justify-center items-center">
-//       <div className="bg-gray-400 w-screen m-40 h-150 flex justify-center items-center rounded-4xl">
-//         {/* <h1>Get your gatepass here</h1> */}
-//         <div className="bg-gray-200 w-full m-20 h-100 rounded-2xl flex justify-center items-center gap-4">
-//           <input className="bg-gray-50 w-50 h-10"></input>
-//           <input className="bg-gray-50 w-50 h-10"></input>
-//           <input
-//             placeholder="Enter the reason here"
-//             className="bg-gray-50 w-50 h-10"
-//           ></input>
-
-//           {/* <button className="bg-blue-400">Submit</button> */}
-//         </div>
-//       </div>
-//     </div>
-//   );
-// };
-
-// export default Home;
-
 import { useState } from "react";
 
 const Home = () => {
@@ -50,7 +26,9 @@ const Home = () => {
           onSubmit={handleSubmit}
           className="bg-gray-200 rounded-2xl p-10 flex flex-col gap-5"
         >
-          <h1 className="text-2xl font-bold text-center">Get Your Gate Pass</h1>
+          <h1 className="text-2xl  text-center bg-gray-800 text-white rounded-2xl h-10">
+            Get Your Gate Pass
+          </h1>
 
           <input
             type="text"
