@@ -1,6 +1,7 @@
 import dotenv from "dotenv";
 import app from "./src/app.ts";
 import connectDB from "./src/db/db.ts";
+import cors from "cors";
 
 dotenv.config();
 

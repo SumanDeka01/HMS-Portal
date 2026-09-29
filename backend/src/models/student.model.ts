@@ -1,14 +1,17 @@
 import mongoose from "mongoose";
+// import bcrypt from "bcrypt";
 
 const studentSchema = new mongoose.Schema({
-    name: {
+    username: {
         type: String,
         required: true
     }, 
     email: {
         type: String,
         required: true,
-        unique: true
+        unique: true,
+        lowercase: true,
+        trim : true
     },
     enrollmentNumber: {
         type: String,
@@ -36,7 +39,8 @@ const studentSchema = new mongoose.Schema({
     password: {
         type: String,
         required: true,
-        minlength: 6
+        minlength: 6,
+        select: false
     },
     role: {
         type: String,
@@ -45,6 +49,22 @@ const studentSchema = new mongoose.Schema({
     }
     
 },{timestamps: true});
+
+// Need to get back to this section once!
+
+// studentSchema.pre("save", async function (next) {
+//   if (!this.isModified("password")) return next();
+
+//   this.password = await bcrypt.hash(this.password, 10);
+//   next();
+// });
+
+
+// studentSchema.methods.comparePassword = async function (
+//   enteredPassword: string
+// ) {
+//   return bcrypt.compare(enteredPassword, this.password);
+// };
 
 const Student = mongoose.model("Student", studentSchema);
 
