@@ -1,70 +1,78 @@
 import mongoose from "mongoose";
-// import bcrypt from "bcrypt";
+import bcrypt from "bcrypt";
 
-const studentSchema = new mongoose.Schema({
+const studentSchema = new mongoose.Schema(
+  {
     username: {
-        type: String,
-        required: true
-    }, 
+      type: String,
+      required: true,
+    },
+
     email: {
-        type: String,
-        required: true,
-        unique: true,
-        lowercase: true,
-        trim : true
+      type: String,
+      required: true,
+      unique: true,
+      lowercase: true,
+      trim: true,
     },
+
     enrollmentNumber: {
-        type: String,
-        required: true,
-        unique: true
+      type: String,
+      required: true,
+      unique: true,
     },
+
     course: {
-        type: String,
-        required: true
+      type: String,
+      required: true,
     },
+
     hostel: {
-        type: String,
-        required: true
+      type: String,
+      required: true,
     },
-    roomNo : {
-        type: String,
-        required: true
+
+    roomNo: {
+      type: String,
+      required: true,
     },
 
     phoneNumber: {
-        type: String,
-        required: true,
-        unique: true
+      type: String,
+      required: true,
+      unique: true,
     },
+
     password: {
-        type: String,
-        required: true,
-        minlength: 6,
-        select: false
+      type: String,
+      required: true,
+      minlength: 6,
+      select: false,
     },
+
     role: {
-        type: String,
-        enum: ['student', 'admin', 'security'],
-        default: 'student'
-    }
-    
-},{timestamps: true});
+      type: String,
+      enum: ["student", "admin", "security"],
+      default: "student",
+    },
+  },
+  { timestamps: true }
+);
 
-// Need to get back to this section once!
+studentSchema.pre("save", async function (next) {
+  if (!this.isModified("password")) {
+    return next();
+  }
 
-// studentSchema.pre("save", async function (next) {
-//   if (!this.isModified("password")) return next();
+  this.password = await bcrypt.hash(this.password, 10);
+  next();
+});
 
-//   this.password = await bcrypt.hash(this.password, 10);
-//   next();
-// });
-
-
-// studentSchema.methods.comparePassword = async function (
-//   enteredPassword: string
-// ) {
-//   return bcrypt.compare(enteredPassword, this.password);
-// };
+studentSchema.methods.comparePassword = async function (
+  enteredPassword: string
+) {
+  return bcrypt.compare(enteredPassword, this.password);
+};
 
 const Student = mongoose.model("Student", studentSchema);
 
