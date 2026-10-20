@@ -1,4 +1,5 @@
 import { useCallback, useEffect, useState } from "react";
+import { QRCodeSVG } from "qrcode.react";
 import DashboardStats from "../components/student/DashboardStats";
 import PassApplicationForm from "../components/student/PassApplicationForm";
 import PassHistory from "../components/student/PassHistory";
@@ -134,6 +135,75 @@ const StudentDashboard = () => {
             <DashboardStats passes={passes} />
           )}
         </section>
+
+        {!loading &&
+          passes.some((pass) => pass.status === "Approved" && pass.qrToken) && (
+            <section className="space-y-4">
+              <div>
+                <h2 className="text-lg font-semibold text-gray-900">
+                  Your approved gate passes
+                </h2>
+                <p className="mt-1 text-sm text-gray-500">
+                  Show the corresponding QR code to security when leaving the
+                  hostel.
+                </p>
+              </div>
+
+              <div className="grid gap-5 sm:grid-cols-2 lg:grid-cols-3">
+                {passes
+                  .filter((pass) => pass.status === "Approved" && pass.qrToken)
+                  .map((pass) => (
+                    <article
+                      key={pass._id}
+                      className="rounded-2xl border border-gray-200 bg-white p-5 shadow-sm"
+                    >
+                      <div className="flex items-start justify-between gap-3">
+                        <div>
+                          <h3 className="font-semibold text-gray-900">
+                            Gate pass approved
+                          </h3>
+                          <p className="mt-1 text-sm text-gray-500">
+                            {pass.destination}
+                          </p>
+                        </div>
+
+                        <span className="rounded-full bg-emerald-100 px-3 py-1 text-xs font-semibold text-emerald-800">
+                          Approved
+                        </span>
+                      </div>
+
+                      <div className="mt-5 flex justify-center rounded-xl bg-white p-3">
+                        <QRCodeSVG
+                          value={pass.qrToken!}
+                          size={190}
+                          level="H"
+                          includeMargin
+                        />
+                      </div>
+
+                      <p className="mt-3 break-words text-center text-xs text-gray-500">
+                        Keep this QR code ready for security verification.
+                      </p>
+
+                      <div className="mt-4 space-y-1 border-t border-gray-100 pt-3 text-sm text-gray-600">
+                        <p>
+                          <span className="font-medium text-gray-800">
+                            Outing:
+                          </span>{" "}
+                          {new Date(pass.outDate).toLocaleString()}
+                        </p>
+                        <p>
+                          <span className="font-medium text-gray-800">
+                            Expected return:
+                          </span>{" "}
+                          {new Date(pass.expectedReturn).toLocaleString()}
+                        </p>
+                      </div>
+                    </article>
+                  ))}
+              </div>
+            </section>
+          )}
 
         <section>
           {loading ? (
