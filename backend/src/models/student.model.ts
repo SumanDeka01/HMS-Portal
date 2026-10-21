@@ -59,13 +59,12 @@ const studentSchema = new mongoose.Schema(
   { timestamps: true }
 );
 
-studentSchema.pre("save", async function (next) {
+studentSchema.pre("save", async function () {
   if (!this.isModified("password")) {
-    return next();
+    return;
   }
 
   this.password = await bcrypt.hash(this.password, 10);
-  next();
 });
 
 studentSchema.methods.comparePassword = async function (
