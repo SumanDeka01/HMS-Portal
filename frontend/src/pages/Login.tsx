@@ -1,18 +1,7 @@
-// import React from "react";
-
-// const Login = () => {
-//   return (
-//     <div>
-//       <h1>Hi from login!</h1>
-//     </div>
-//   );
-// };
-
-// export default Login;
-
 import { useState } from "react";
 import { Link, useNavigate } from "react-router-dom";
 import api from "../services/api";
+import { useAuth } from "../context/AuthContext";
 
 interface LoginForm {
   email: string;
@@ -21,6 +10,7 @@ interface LoginForm {
 
 const Login = () => {
   const navigate = useNavigate();
+  const { login } = useAuth();
 
   const [formData, setFormData] = useState<LoginForm>({
     email: "",
@@ -39,24 +29,35 @@ const Login = () => {
 
   const handleSubmit = async (e: React.FormEvent<HTMLFormElement>) => {
     e.preventDefault();
-
     setLoading(true);
     setError("");
 
     try {
-      const res = await api.post("/auth/login", formData);
+      const res = await api.post("/auth/login", {
+        email: formData.email.trim(),
+        password: formData.password,
+      });
 
-      localStorage.setItem("token", res.data.token);
-      localStorage.setItem("user", JSON.stringify(res.data.user));
+      const { token, user } = res.data;
 
-      const role = res.data.user.role;
+      if (!token || !user?.role) {
+        setError("Invalid login response from server.");
+        return;
+      }
 
-      if (role === "student") {
-        navigate("/student/dashboard");
-      } else if (role === "admin") {
-        navigate("/admin/dashboard");
-      } else if (role === "security") {
-        navigate("/security/dashboard");
+      if (!["student", "admin", "security"].includes(user.role)) {
+        setError("Your account has an unrecognized role.");
+        return;
+      }
+
+      login(token, user);
+
+      if (user.role === "student") {
+        navigate("/student/dashboard", { replace: true });
+      } else if (user.role === "admin") {
+        navigate("/admin/dashboard", { replace: true });
+      } else {
+        navigate("/security/dashboard", { replace: true });
       }
     } catch (err: any) {
       setError(err.response?.data?.message || "Invalid email or password.");
@@ -77,18 +78,24 @@ const Login = () => {
         </p>
 
         {error && (
-          <div className="bg-red-100 text-red-700 p-3 rounded-lg mb-5 text-sm">
+          <div
+            role="alert"
+            className="bg-red-100 text-red-700 p-3 rounded-lg mb-5 text-sm"
+          >
             {error}
           </div>
         )}
 
         <form onSubmit={handleSubmit} className="space-y-5">
           <div>
-            <label className="block text-sm font-medium mb-2">Email</label>
-
+            <label htmlFor="email" className="block text-sm font-medium mb-2">
+              Email
+            </label>
             <input
+              id="email"
               type="email"
               name="email"
+              autoComplete="email"
               value={formData.email}
               onChange={handleChange}
               placeholder="Enter your email"
@@ -98,11 +105,17 @@ const Login = () => {
           </div>
 
           <div>
-            <label className="block text-sm font-medium mb-2">Password</label>
-
+            <label
+              htmlFor="password"
+              className="block text-sm font-medium mb-2"
+            >
+              Password
+            </label>
             <input
+              id="password"
               type="password"
               name="password"
+              autoComplete="current-password"
               value={formData.password}
               onChange={handleChange}
               placeholder="Enter your password"
