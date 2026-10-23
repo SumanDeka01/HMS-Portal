@@ -1,23 +1,14 @@
-import { Route, Routes } from "react-router-dom";
-import Footer from "./components/Footer";
 import Navbar from "./components/Navbar";
-import Home from "./pages/Home";
-import Register from "./pages/Register";
-import Profile from "./pages/Profile";
+import Footer from "./components/Footer";
+import AppRoutes from "./routes/AppRoutes";
+import { AuthProvider } from "./context/AuthContext";
 
-const App = () => {
+export default function App() {
   return (
-    <>
+    <AuthProvider>
       <Navbar />
-      <Routes>
-        <Route path="/" element={<Home />} />
-        <Route path="/home" element={<Home />} />
-        <Route path="/login" element={<Register />} />
-        <Route path="/profile" element={<Profile />} />
-      </Routes>
+      <AppRoutes />
       <Footer />
-    </>
+    </AuthProvider>
   );
-};
-
-export default App;
+}
