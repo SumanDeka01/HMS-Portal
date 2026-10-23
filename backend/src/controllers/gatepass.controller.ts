@@ -67,7 +67,7 @@ export const createGatePass = async (
       destination,
       outDate: outingDate,
       expectedReturn: returnDate,
-      emergencyContact: emergencyContact,
+      emergencyContanct: emergencyContact,
       status: "Pending",
     });
 

@@ -21,7 +21,7 @@ const gatePassSchema = new mongoose.Schema({
         required: true,
     },
     expectedReturn: {
-        type: String,
+        type: Date,
         required: true,
     },
     emergencyContanct: {
