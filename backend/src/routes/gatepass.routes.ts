@@ -1,7 +1,7 @@
 import { verifyGatePass
-  
  } from "../controllers/gatepass.controller.js";
 import express from "express";
+
 import {
   createGatePass,
   getMyGatePasses,
