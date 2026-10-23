@@ -110,7 +110,7 @@ const Register = () => {
           <input
             type="email"
             name="email"
-            placeholder="College Email"
+            placeholder="Type your Email here"
             value={formData.email}
             onChange={handleChange}
             required
@@ -137,6 +137,8 @@ const Register = () => {
             <option value="B.Tech CSE">B.Tech CSE</option>
             <option value="BCA">BCA</option>
             <option value="MCA">MCA</option>
+            <option value="BBA">BBA</option>
+            <option value="MBA">MBA</option>
           </select>
 
           <select
@@ -147,10 +149,12 @@ const Register = () => {
             className="w-full rounded-lg border px-4 py-3 outline-none focus:ring-2 focus:ring-blue-500"
           >
             <option value="">Select Hostel</option>
-            <option value="Boys Hostel A">Boys Hostel A</option>
-            <option value="Boys Hostel B">Boys Hostel B</option>
-            <option value="Girls Hostel A">Girls Hostel A</option>
-            <option value="Girls Hostel B">Girls Hostel B</option>
+            <option value="Boys Hostel I">Boys Hostel I</option>
+            <option value="Boys Hostel H">Boys Hostel H</option>
+            <option value="Boys Hostel HE">Boys Hostel HE</option>
+
+            <option value="Girls Hostel E">Girls Hostel E</option>
+            <option value="Girls Hostel F">Girls Hostel F</option>
           </select>
 
           <input
