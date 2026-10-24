@@ -1,4 +1,8 @@
+import { useNavigate } from "react-router-dom";
+
 const Home = () => {
+  const navigate = useNavigate();
+
   return (
     <div className="flex min-h-screen items-center justify-center bg-gray-50 px-4">
       <div className="rounded-xl bg-white p-8 text-center shadow-md">
@@ -6,7 +10,10 @@ const Home = () => {
 
         <h2 className="mt-3 text-lg text-gray-600">Hostel Gate Pass System</h2>
 
-        <button className="mt-6 rounded-lg bg-blue-600 px-6 py-2 text-white transition hover:bg-blue-700">
+        <button
+          className="mt-6 rounded-lg bg-blue-600 px-6 py-2 text-white transition hover:bg-blue-700"
+          onClick={() => navigate("/login")}
+        >
           Get Started
         </button>
       </div>
